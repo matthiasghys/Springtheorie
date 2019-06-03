@@ -5,9 +5,11 @@
 <nav th:replace="fragments::menu"></nav>
 <h1>Pizza's</h1>
 <ul class="zebra">
+
     <li th:each="pizza:${pizzas}" th:object="${pizza}" >
         <span th:text="|*{naam} EUR *{prijs}|"></span>
         <span th:if="*{pikant}">pikant</span>
+        <a th:href="@{/pizzas/{id}(id=*{id})}">Detail</a>
     </li>
 </ul>
 </body>
