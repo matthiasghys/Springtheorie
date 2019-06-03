@@ -1,12 +1,8 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.com">
-<head>
-    <meta charset="UTF-8">
-    <title>Pizza Luigi</title>
-    <link rel="stylesheet" th:href="@{/css/luigi.css}">
-    <link rel="icon" th:href="@{/images/luigi.ico}" type="image/x-icon">
-</head>
+<head th:replace="fragments::head(title='Pizza\'s')"></head>
 <body>
+<nav th:replace="fragments::menu"></nav>
 <h1>Pizza's</h1>
 <ul class="zebra">
     <li th:each="pizza:${pizzas}" th:object="${pizza}" >
