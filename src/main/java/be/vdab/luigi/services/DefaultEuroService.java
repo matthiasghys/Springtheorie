@@ -1,6 +1,9 @@
 package be.vdab.luigi.services;
 
+import be.vdab.luigi.exceptions.KoersClientException;
 import be.vdab.luigi.restclients.KoersClient;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -8,15 +11,23 @@ import java.math.RoundingMode;
 
 @Service
 public class DefaultEuroService implements EuroService {
-    private final KoersClient koersClient;
+    private final KoersClient[] koersClients;
+    private final Logger logger = LoggerFactory.getLogger(this.getClass());
 
-    DefaultEuroService(KoersClient koersClient){
-        this.koersClient=koersClient;
+    DefaultEuroService(KoersClient[] koersClients){
+        this.koersClients=koersClients;
     }
 
     @Override
     public BigDecimal naarDollar(BigDecimal euro){
-        return euro.multiply(koersClient.getDollarKoers()).setScale(2, RoundingMode.HALF_UP);
-
+        for(KoersClient koersClient : koersClients){
+            try{
+                return euro.multiply(koersClient.getDollarKoers()).setScale(2, RoundingMode.HALF_UP);
+            } catch (KoersClientException ex) {
+                logger.error("kan dollarkoers niet lezen", ex);
+            }
+        }
+        logger.error("kan dollarkoers van geen enkele bron lezen");
+        return null;
     }
 }

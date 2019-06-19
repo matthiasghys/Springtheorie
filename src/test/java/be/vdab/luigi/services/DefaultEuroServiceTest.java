@@ -21,7 +21,7 @@ public class DefaultEuroServiceTest {
     @Before
     public void before(){
         when(koersClient.getDollarKoers()).thenReturn(BigDecimal.valueOf(1.5));
-        defaultEuroService = new DefaultEuroService(koersClient);
+        defaultEuroService = new DefaultEuroService(new KoersClient[] {koersClient});
     }
 
     @Test

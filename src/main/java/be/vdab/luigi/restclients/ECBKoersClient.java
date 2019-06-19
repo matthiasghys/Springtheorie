@@ -3,7 +3,9 @@ package be.vdab.luigi.restclients;
 import be.vdab.luigi.exceptions.KoersClientException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Primary;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import javax.xml.stream.XMLInputFactory;
@@ -16,20 +18,13 @@ import java.math.BigDecimal;
 import java.net.MalformedURLException;
 import java.net.URL;
 @Component
-@Primary
+@Order(2)
 public class ECBKoersClient implements KoersClient {
     private final Logger logger = LoggerFactory.getLogger(this.getClass());
     private final URL url;
 
-    ECBKoersClient(){
-        try{
-            this.url = new URL("https://www.ecb.europa.eu/stats/eurofxref/eurofxref-daily.xml");
-
-        }catch(MalformedURLException ex ){
-            String fout = "ECN URL is verkeerd";
-            logger.error(fout, ex);
-            throw new KoersClientException(fout);
-        }
+    ECBKoersClient(@Value("${ecbKoersURL}")URL url){
+        this.url = url;
     }
 
 
