@@ -66,7 +66,7 @@ public class JDBCPizzaRepository implements PizzaRepository{
 
     @Override
     public List<Pizza> findByPrijsBetween(BigDecimal van, BigDecimal tot){
-        String sql="select id, naam, prijs, pikant from pizzas" + "where prijs between ? and ? order by id";
+        String sql="select id, naam, prijs, pikant from pizzas " + "where prijs between ? and ? order by prijs";
         return template.query(sql, pizzaMapper, van, tot);
     }
 
@@ -87,7 +87,7 @@ public class JDBCPizzaRepository implements PizzaRepository{
 
     @Override
     public List<Pizza> findByPrijs(BigDecimal prijs){
-        String sql = "select id, naam, prijs, pikant from pizzas" +
+        String sql = "select id, naam, prijs, pikant from pizzas " +
                 "where prijs = ?";
         return template.query(sql, pizzaMapper, prijs);
     }
